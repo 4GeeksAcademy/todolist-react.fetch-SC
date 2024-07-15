@@ -1,26 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
+// Create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+    const [tarea, setTarea] = useState("");
+    const [misTareas, setMisTareas] = useState([]);
+
+    const handleSubmit = (evento) => {
+        evento.preventDefault();
+        if (tarea.trim() !== "") {
+            setMisTareas([...misTareas, tarea]);
+            setTarea("");
+        }
+    };
+
+    return (
+        <div className="text-center">
+            <h1 className="text-center mt-5">ToDo List</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    value={tarea}
+                    onChange={(evento) => setTarea(evento.target.value)}
+                    placeholder="Añadir nueva tarea"
+                />
+            </form>
+            <ul>
+                {misTareas.map((posicion, index) => (
+                    <li key={index} className="task-item">
+                        {posicion}
+                        <span
+                            className="delete-button"
+                            onClick={() => setMisTareas(misTareas.filter((item, i) => i !== index))}
+                        >
+                            &#x2716;
+                        </span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default Home;
